@@ -81,12 +81,12 @@ def generate_students(class_group_ids):
     for i in range(1, NUM_RECORDS + 1):
         student_ids.append(i)
         birth_date = fake.date_of_birth(minimum_age=6, maximum_age=18)
-        sex = random.choice(['М', 'Ж'])
+        sex = random.choice(['M', 'F'])
         
         data.append({
             "ID": i,
-            "first_name": fake.first_name_male() if sex == 'М' else fake.first_name_female(),
-            "last_name": fake.last_name_male() if sex == 'М' else fake.last_name_female(),
+            "first_name": fake.first_name_male() if sex == 'M' else fake.first_name_female(),
+            "last_name": fake.last_name_male() if sex == 'M' else fake.last_name_female(),
             "birth_date": birth_date.strftime("%Y-%m-%d"),
             "sex": sex,
             "class_group": get_random_id(class_group_ids, none_chance=0.01),
