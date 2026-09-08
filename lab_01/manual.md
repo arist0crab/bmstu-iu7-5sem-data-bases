@@ -61,3 +61,14 @@ CREATE DATABASE
 
 Теперь, когда база данных создана, к ней можно подключиться.
 
+## Основные команды для работы с базой данных
+
+### Создание новой таблицы
+
+- [английская версия](https://www.postgresql.org/docs/current/tutorial-table.html)
+- [русская версия](https://postgrespro.ru/docs/postgresql/18/tutorial-table)
+
+### Редактирование созданной таблицы 
+
+- [английская версия](https://www.postgresql.org/docs/current/sql-altertable.html)
+- [русская версия](https://postgrespro.ru/docs/postgresql/current/sql-altertable)
