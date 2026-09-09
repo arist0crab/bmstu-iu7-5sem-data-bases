@@ -1,0 +1,9 @@
+\copy teachers FROM 'output_csv/teachers.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
+\copy cabinets FROM 'output_csv/cabinets.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
+\copy class_groups FROM 'output_csv/class_groups.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
+\copy students FROM 'output_csv/students.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
+\copy medical_certificates FROM 'output_csv/medical_certificates.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
+\copy absents FROM 'output_csv/absents.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
+\copy desks FROM 'output_csv/desks.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
+\copy seats FROM 'output_csv/seats.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
+\copy seatings_assignments FROM 'output_csv/seatings_assignments.csv' WITH (FORMAT CSV, HEADER true, DELIMITER ',', NULL 'NULL');
