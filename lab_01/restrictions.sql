@@ -24,8 +24,6 @@ ALTER TABLE class_groups
     ADD CONSTRAINT fk_teacher_class_group FOREIGN KEY (teacher_id) REFERENCES teachers(id),
     ADD CONSTRAINT fk_cabinet_class_group FOREIGN KEY (cabinet_id) REFERENCES cabinets(id);
 
-ALTER TABLE cabinets ADD CONSTRAINT fk_teacher_cabinet FOREIGN KEY (teacher_id) REFERENCES teachers(id);
-
 ALTER TABLE desks ADD CONSTRAINT fk_cabinet_desk FOREIGN KEY (cabinet_id) REFERENCES cabinets(id);
 
 ALTER TABLE seats ADD CONSTRAINT fk_desk_seat FOREIGN KEY (desk_id) REFERENCES desks(id);
@@ -86,6 +84,8 @@ ALTER TABLE seatings_assignments
 
 -- check
 
+ALTER TABLE teachers ADD CONSTRAINT chk_mentor_teacher_id CHECK (mentor_teacher_id != id);
+
 ALTER TABLE students ADD CONSTRAINT chk_students_sex CHECK (sex IN ('M', 'F'));
 
 ALTER TABLE medical_certificates ADD CONSTRAINT chk_certificates_dates CHECK (expire_date IS NULL OR expire_date >= issue_date);
@@ -104,6 +104,10 @@ ALTER TABLE desks
 ALTER TABLE seats ADD CONSTRAINT chk_seat_index CHECK (seat_index >= 0);
 
 ALTER TABLE seatings_assignments ADD CONSTRAINT chk_seatings_dates CHECK (end_date IS NULL OR end_date >= start_date);
+
+-- unique 
+
+ALTER TABLE class_groups ADD CONSTRAINT unique_class_group_data UNIQUE (teacher_id, cabinet_id);
 
 -- default
 

@@ -1,5 +1,3 @@
--- CREATE DATABASE lwdb;
-
 CREATE TABLE "public"."teachers" (
     id SERIAL,
     first_name VARCHAR(100),
@@ -46,7 +44,6 @@ CREATE TABLE "public"."class_groups" (
 
 CREATE TABLE "public"."cabinets" (
     id  SERIAL,
-    teacher_id INT,
     rows_count INT,
     cols_count INT
 );

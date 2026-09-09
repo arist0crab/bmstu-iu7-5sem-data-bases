@@ -14,7 +14,6 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 def get_random_id(id_list, none_chance=0.1):
-    """Возвращает случайный ID из списка или None (для NULL в БД)."""
     if not id_list or random.random() < none_chance:
         return None
     return random.choice(id_list)
@@ -28,16 +27,20 @@ def generate_teachers():
     for i in range(1, NUM_RECORDS + 1):
         teacher_ids.append(i)
         birth_date = fake.date_of_birth(minimum_age=25, maximum_age=65)
+        
+        mentor_id = None
+        while True:
+            mentor_id = get_random_id(teacher_ids, none_chance=0.3)
+            if mentor_id is None or mentor_id != i:
+                break
+        
         data.append({
             "id": i,
             "first_name": fake.first_name(),
             "last_name": fake.last_name(),
             "birth_date": birth_date.strftime("%Y-%m-%d"),
-            "mentor_teacher_id": None
+            "mentor_teacher_id": mentor_id
         })
-
-    for row in data:
-        row["mentor_teacher_id"] = get_random_id(teacher_ids, none_chance=0.3)
 
     return data, teacher_ids
 
@@ -51,7 +54,6 @@ def generate_cabinets():
         cabinet_ids.append(i)
         data.append({
             "id": i,
-            "teacher_id": get_random_id(teacher_ids, none_chance=0.2) if 'teacher_ids' in globals() else None,
             "rows_count": random.randint(3, 8),
             "cols_count": random.randint(4, 10)
         })
@@ -63,16 +65,27 @@ def generate_class_groups(teacher_ids, cabinet_ids):
     data = []
     class_group_ids = []
     letters = ['А', 'Б', 'В', 'Г', 'Д', 'Е']
+    
+    used_pairs = set()
 
     for i in range(1, NUM_RECORDS + 1):
         class_group_ids.append(i)
+        
+        while True:
+            teacher_id = get_random_id(teacher_ids, none_chance=0.05)
+            cabinet_id = get_random_id(cabinet_ids, none_chance=0.1)
+            pair = (teacher_id, cabinet_id)
+            if pair not in used_pairs:
+                used_pairs.add(pair)
+                break
+        
         data.append({
             "id": i,
             "grade": random.randint(1, 11),
             "internal_id": random.randint(1, 11),
             "letter_id": random.choice(letters),
-            "teacher_id": get_random_id(teacher_ids, none_chance=0.05),
-            "cabinet_id": get_random_id(cabinet_ids, none_chance=0.1)
+            "teacher_id": teacher_id,
+            "cabinet_id": cabinet_id
         })
     return data, class_group_ids
 
@@ -250,7 +263,7 @@ if __name__ == "__main__":
     save_to_csv("teachers.csv", teachers_data,
                 ["id", "first_name", "last_name", "birth_date", "mentor_teacher_id"])
     save_to_csv("cabinets.csv", cabinets_data,
-                ["id", "teacher_id", "rows_count", "cols_count"])
+                ["id", "rows_count", "cols_count"])
     save_to_csv("class_groups.csv", class_groups_data,
                 ["id", "grade", "internal_id", "letter_id", "teacher_id", "cabinet_id"])
     save_to_csv("students.csv", students_data,
