@@ -49,11 +49,20 @@ def generate_cabinets():
     print("Генерация cabinets...")
     data = []
     cabinet_ids = []
+    used_numbers = set()
 
     for i in range(1, NUM_RECORDS + 1):
         cabinet_ids.append(i)
+        
+        while True:
+            number = random.randint(1, NUM_RECORDS * 2)
+            if number not in used_numbers:
+                used_numbers.add(number)
+                break
+        
         data.append({
             "id": i,
+            "number": number,
             "rows_count": random.randint(3, 8),
             "cols_count": random.randint(4, 10)
         })
@@ -263,7 +272,7 @@ if __name__ == "__main__":
     save_to_csv("teachers.csv", teachers_data,
                 ["id", "first_name", "last_name", "birth_date", "mentor_teacher_id"])
     save_to_csv("cabinets.csv", cabinets_data,
-                ["id", "rows_count", "cols_count"])
+                ["id", "number", "rows_count", "cols_count"])
     save_to_csv("class_groups.csv", class_groups_data,
                 ["id", "grade", "internal_id", "letter_id", "teacher_id", "cabinet_id"])
     save_to_csv("students.csv", students_data,
