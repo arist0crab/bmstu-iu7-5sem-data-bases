@@ -49,20 +49,11 @@ def generate_cabinets():
     print("Генерация cabinets...")
     data = []
     cabinet_ids = []
-    used_numbers = set()
 
     for i in range(1, NUM_RECORDS + 1):
         cabinet_ids.append(i)
-        
-        while True:
-            number = random.randint(1, NUM_RECORDS * 2)
-            if number not in used_numbers:
-                used_numbers.add(number)
-                break
-        
         data.append({
             "id": i,
-            "number": number,
             "rows_count": random.randint(3, 8),
             "cols_count": random.randint(4, 10)
         })
@@ -103,6 +94,9 @@ def generate_students(class_group_ids):
     print("Генерация students...")
     data = []
     student_ids = []
+    
+    # Только первые 40 классов будут заполнены учениками
+    active_class_group_ids = class_group_ids[:40]
 
     for i in range(1, NUM_RECORDS + 1):
         student_ids.append(i)
@@ -115,7 +109,7 @@ def generate_students(class_group_ids):
             "last_name": fake.last_name_male() if sex == 'M' else fake.last_name_female(),
             "sex": sex,
             "birth_date": birth_date.strftime("%Y-%m-%d"),
-            "class_group_id": random.choice(class_group_ids),
+            "class_group_id": random.choice(active_class_group_ids),  # Только из первых 40
             "is_active": random.choices([True, False], weights=[0.9, 0.1])[0]
         })
     return data, student_ids
@@ -272,7 +266,7 @@ if __name__ == "__main__":
     save_to_csv("teachers.csv", teachers_data,
                 ["id", "first_name", "last_name", "birth_date", "mentor_teacher_id"])
     save_to_csv("cabinets.csv", cabinets_data,
-                ["id", "number", "rows_count", "cols_count"])
+                ["id", "rows_count", "cols_count"])
     save_to_csv("class_groups.csv", class_groups_data,
                 ["id", "grade", "internal_id", "letter_id", "teacher_id", "cabinet_id"])
     save_to_csv("students.csv", students_data,
