@@ -1,4 +1,4 @@
-CREATE DATABASE lwdb;
+-- CREATE DATABASE lwdb;
 
 CREATE TABLE "public"."teachers" (
     id SERIAL,
