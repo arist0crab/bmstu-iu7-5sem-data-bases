@@ -72,3 +72,8 @@ CREATE DATABASE
 
 - [английская версия](https://www.postgresql.org/docs/current/sql-altertable.html)
 - [русская версия](https://postgrespro.ru/docs/postgresql/current/sql-altertable)
+
+### Копирование данных
+
+- [английская версия](https://www.postgresql.org/docs/current/sql-copy.html)
+- [русская версия](https://postgrespro.ru/docs/postgresql/current/sql-copy)
