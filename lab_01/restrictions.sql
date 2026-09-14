@@ -64,6 +64,7 @@ ALTER TABLE class_groups
     ALTER COLUMN letter_id SET NOT NULL;
 
 ALTER TABLE cabinets 
+    ALTER COLUMN number SET NOT NULL,
     ALTER COLUMN rows_count SET NOT NULL,
     ALTER COLUMN cols_count SET NOT NULL;
 
@@ -108,6 +109,8 @@ ALTER TABLE seatings_assignments ADD CONSTRAINT chk_seatings_dates CHECK (end_da
 -- unique 
 
 ALTER TABLE class_groups ADD CONSTRAINT unique_class_group_data UNIQUE (teacher_id, cabinet_id);
+
+ALTER TABLE cabinets ADD CONSTRAINT unique_cabinet_number UNIQUE (number);
 
 -- default
 

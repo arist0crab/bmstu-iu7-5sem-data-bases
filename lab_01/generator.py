@@ -94,6 +94,9 @@ def generate_students(class_group_ids):
     print("Генерация students...")
     data = []
     student_ids = []
+    
+    # Только первые 40 классов будут заполнены учениками
+    active_class_group_ids = class_group_ids[:40]
 
     for i in range(1, NUM_RECORDS + 1):
         student_ids.append(i)
@@ -106,7 +109,7 @@ def generate_students(class_group_ids):
             "last_name": fake.last_name_male() if sex == 'M' else fake.last_name_female(),
             "sex": sex,
             "birth_date": birth_date.strftime("%Y-%m-%d"),
-            "class_group_id": random.choice(class_group_ids),
+            "class_group_id": random.choice(active_class_group_ids),  # Только из первых 40
             "is_active": random.choices([True, False], weights=[0.9, 0.1])[0]
         })
     return data, student_ids

@@ -44,6 +44,7 @@ CREATE TABLE "public"."class_groups" (
 
 CREATE TABLE "public"."cabinets" (
     id  SERIAL,
+    number INT,
     rows_count INT,
     cols_count INT
 );
