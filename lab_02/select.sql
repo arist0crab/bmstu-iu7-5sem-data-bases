@@ -188,3 +188,15 @@ WHERE id IN (
     SELECT id 
     FROM NewDuplicates
 );
+
+-- защита
+-- Найти учителей, у которых в классе нет детей с диагнозом 'Здоров'
+
+SELECT T.id, T.first_name, T.last_name 
+FROM teachers AS T JOIN class_groups AS CG ON CG.teacher_id = T.id
+WHERE NOT EXISTS (
+    SELECT *
+    FROM students AS S
+    JOIN medical_certificates AS MC ON MC.student_id = S.id
+    WHERE S.class_group_id = CG.id AND MC.diagnosis = 'Здоров'
+);
