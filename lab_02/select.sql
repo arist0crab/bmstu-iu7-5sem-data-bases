@@ -44,10 +44,47 @@ DROP TABLE IF EXISTS class_students_quantity;
 CREATE TEMP TABLE class_students_quantity SELECT CG.id, COUNT(S.id) FROM class_groups AS CG JOIN students AS S ON CG.id = S.class_group_id GROUP BY CG.id;
 
 -- 12. select с вложенными коррелированными подзапросами в качестве производных таблиц в предложении from
-???
+-- Студент, который больше всех пропускал и который имеет больше всех справок
+SELECT 'По пропускам' AS criteria, s.first_name, s.last_name AS top_student
+FROM students s 
+JOIN (
+    SELECT student_id, COUNT(*) AS total_absents
+    FROM absents
+    GROUP BY student_id
+    ORDER BY total_absents DESC
+    LIMIT 1
+) AS best_absent ON best_absent.student_id = s.id
+
+UNION ALL
+
+SELECT 'По справкам' AS criteria, s.first_name, s.last_name AS top_student
+FROM students s 
+JOIN (
+    SELECT student_id, COUNT(*) AS total_certs
+    FROM medical_certificates
+    GROUP BY student_id
+    ORDER BY total_certs DESC
+    LIMIT 1
+) AS best_cert ON best_cert.student_id = s.id;
 
 -- 13. select с вложенными подзапросами с уровнем вложенности 3
-???
+-- Ученик с максимальным количеством пропусков
+
+SELECT s.first_name, s.last_name AS worst_student
+FROM students s
+WHERE s.id = (
+    SELECT a.student_id
+    FROM absents a
+    GROUP BY a.student_id
+    HAVING COUNT(*) = (
+        SELECT MAX(cnt)
+        FROM (
+            SELECT COUNT(*) AS cnt
+            FROM absents
+            GROUP BY student_id
+        ) AS abs_counts
+    )
+);
 
 -- 14. select консолидирующий данные с помощью предложения GROUP BY, но без предложения HAVING
 -- Классы и их количество учеников
@@ -80,3 +117,74 @@ DELETE FROM medical_certificates WHERE diagnosis LIKE '%Здоров%';
 -- 21. delete с вложенным коррелированным подзапросом в предложении WHERE
 -- Удаляет медицинские справки всех мальчиков из 5х классов
 DELETE FROM medical_certificates WHERE student_id IN (SELECT S.id FROM students as S JOIN class_groups AS CG ON S.class_group_id = CG.id WHERE S.sex = 'M' AND CG.grade = 5);
+
+-- 22. select с простым обобщенным табличным выражением
+-- Создает таблицу, храняющую количество парт в каждом кабинете, считает среднее количество парт на кабинет
+WITH CPC (cabinet_id, desks_quantity) AS (SELECT cabinet_id, COUNT(*) FROM desks GROUP BY cabinet_id) SELECT AVG (desks_quantity) AS "Срднее количество парт в кабинете" FROM CPC;
+
+-- 23. select с рекурсивным обобщенным табличным выражением
+-- Создает плоскую таблицу менторов учителей
+WITH RECURSIVE TeacherMentors (mentor_teacher_id, id, first_name, last_name, level) AS (
+    SELECT mentor_teacher_id, id, first_name, last_name, 0 AS level
+    FROM teachers
+    WHERE mentor_teacher_id IS NULL
+
+    UNION ALL
+
+    SELECT T.mentor_teacher_id, T.id, T.first_name, T.last_name, TM.level + 1
+    FROM teachers AS T INNER JOIN TeacherMentors AS TM ON T.mentor_teacher_id = TM.id
+    )
+SELECT * FROM TeacherMentors ORDER BY level;
+
+-- 24. Оконные функции. Использование конструкци MIN/MAX/AVG OVER()
+-- Выводит ФИО студента, число его справок и среднее число справок по его классу
+SELECT
+    first_name,
+    last_name,
+    grade,
+    letter_id,
+    cert_count,
+    AVG(cert_count) OVER (PARTITION BY class_group_id) AS avg_in_class
+FROM (
+    SELECT
+        S.id,
+        S.first_name,
+        S.last_name,
+        S.class_group_id,
+        CG.grade,
+        CG.letter_id,
+        COUNT(MC.id) AS cert_count
+    FROM students AS S
+    LEFT JOIN medical_certificates AS MC ON MC.student_id = S.id
+    LEFT JOIN class_groups AS CG ON CG.id = S.class_group_id
+    GROUP BY S.id, S.first_name, S.last_name, S.class_group_id, CG.grade, CG.letter_id
+) AS Sub
+ORDER BY grade, letter_id, last_name;
+
+-- 25. Запрос, в результате которого в данных появляются полные дубли. Устраняет дублирующиеся строки с использованием функции ROW_NUMBER()
+
+SELECT setval(
+    pg_get_serial_sequence('seats', 'id'),
+    COALESCE((SELECT MAX(id) FROM seats), 1)
+);
+
+-- Создание дубликатор первых 100 записей
+INSERT INTO seats (desk_id, seat_index)
+SELECT desk_id, seat_index
+FROM seats
+CROSS JOIN generate_series(1, 3)
+WHERE id <= 100;
+
+-- Удаление дублей
+WITH NewDuplicates AS (
+    SELECT 
+        s.id,
+        ROW_NUMBER() OVER (PARTITION BY s.desk_id, s.seat_index ORDER BY s.id) AS rn
+    FROM seats s
+    WHERE s.id > 1000
+)
+DELETE FROM seats
+WHERE id IN (
+    SELECT id 
+    FROM NewDuplicates
+);
