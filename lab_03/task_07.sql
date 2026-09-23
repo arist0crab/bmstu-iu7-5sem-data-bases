@@ -17,3 +17,5 @@ BEGIN
 END;
 $main$
 LANGUAGE plpgsql;
+
+CALL archive_expired_certificates();

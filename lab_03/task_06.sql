@@ -5,7 +5,8 @@ CREATE OR REPLACE PROCEDURE get_subordinate_teachers(
 )
 AS $main$
 BEGIN
-    CREATE TEMP TABLE temp_subordinates ON COMMIT DROP AS
+    DROP TABLE IF EXISTS temp_subordinates;
+    CREATE TEMP TABLE temp_subordinates AS
     WITH RECURSIVE subordinates AS (
         SELECT 
             id, 
@@ -29,3 +30,6 @@ BEGIN
 END;
 $main$
 LANGUAGE plpgsql;
+
+CALL get_subordinate_teachers(1);
+SELECT * FROM temp_subordinates;
