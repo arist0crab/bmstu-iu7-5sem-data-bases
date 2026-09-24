@@ -32,3 +32,5 @@ CREATE OR REPLACE TRIGGER trg_seatings_after_change
 AFTER UPDATE OR DELETE ON seatings_assignments
 FOR EACH ROW
 EXECUTE FUNCTION log_seating_changes();
+
+SELECT * FROM seatings_history;

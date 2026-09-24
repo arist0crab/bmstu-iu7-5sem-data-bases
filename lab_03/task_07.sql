@@ -19,3 +19,4 @@ $main$
 LANGUAGE plpgsql;
 
 CALL archive_expired_certificates();
+SELECT * FROM medical_certificates;
