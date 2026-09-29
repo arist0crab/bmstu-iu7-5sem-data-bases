@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Data.SqlTypes;
 
 
-public class SchoolManagementService
+public class AgeCalculation
 {
     [SqlFunction(DataAccess = DataAccessKind.Read)]
     public static SqlInt32 CalculateAge(SqlDateTime birthDate, SqlDateTime targetDate)
