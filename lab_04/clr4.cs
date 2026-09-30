@@ -17,7 +17,7 @@ public class QuarantineSimulation
     {
         DateTime start = startDate.Value;
 
-        List<DateTime> quarantineDates = [];
+        List<DateTime> quarantineDates = new List<DateTime>();
         for (int i = 0; i < quarantineDurationDays.Value; i++)
         {
             DateTime currentDate = start.AddDays(i);
@@ -65,7 +65,7 @@ public class QuarantineSimulation
             );
             getStudents.Parameters.AddWithValue("@studentId", studentId);
 
-            List<int> studentIds = [];
+            List<int> studentIds = new List<int>();
             using (SqlDataReader reader = getStudents.ExecuteReader())
             {
                 while (reader.Read())
