@@ -55,7 +55,7 @@ public struct SeatCoordinate : INullable
         if (s.IsNull) return Null;
 
         string str = s.Value;
-        string[] parts = str.Split('-');
+        string[] parts = str.Split(new char[] { '-' });
 
         SeatCoordinate udt = new SeatCoordinate();
         udt.row = int.Parse(parts[0]);

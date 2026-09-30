@@ -7,15 +7,9 @@ using Microsoft.SqlServer.Server;
 public class QuarantineSimulation
 {
     [Microsoft.SqlServer.Server.SqlProcedure]
-    public static void IsolateInfectedGroup(SqlInt32 studentId, SqlString diagnosis, SqlInt32 quarantineDurationDays)
-    {
-        IsolateInfectedGroup(studentId, diagnosis, quarantineDurationDays, new SqlDateTime(DateTime.Now));
-    }
-
-    [Microsoft.SqlServer.Server.SqlProcedure]
     public static void IsolateInfectedGroup(SqlInt32 studentId, SqlString diagnosis, SqlInt32 quarantineDurationDays, SqlDateTime startDate)
     {
-        DateTime start = startDate.Value;
+        DateTime start = startDate.IsNull ? DateTime.Now : startDate.Value;
 
         List<DateTime> quarantineDates = new List<DateTime>();
         for (int i = 0; i < quarantineDurationDays.Value; i++)
