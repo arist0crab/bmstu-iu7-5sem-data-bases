@@ -54,6 +54,7 @@ def generate_cabinets():
         cabinet_ids.append(i)
         data.append({
             "id": i,
+            "number": i,
             "rows_count": random.randint(3, 8),
             "cols_count": random.randint(4, 10)
         })
@@ -266,7 +267,7 @@ if __name__ == "__main__":
     save_to_csv("teachers.csv", teachers_data,
                 ["id", "first_name", "last_name", "birth_date", "mentor_teacher_id"])
     save_to_csv("cabinets.csv", cabinets_data,
-                ["id", "rows_count", "cols_count"])
+                ["id", "number", "rows_count", "cols_count"])
     save_to_csv("class_groups.csv", class_groups_data,
                 ["id", "grade", "internal_id", "letter_id", "teacher_id", "cabinet_id"])
     save_to_csv("students.csv", students_data,
