@@ -7,5 +7,6 @@ TRUNCATE TABLE
     cabinets,
     desks,
     seats,
-    seatings_assignments
+    seatings_assignments,
+    teachers_restored
 CASCADE;
