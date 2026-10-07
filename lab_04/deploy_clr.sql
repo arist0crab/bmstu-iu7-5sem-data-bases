@@ -8,50 +8,56 @@ EXEC sp_configure 'clr enabled', 1;
 RECONFIGURE;
 GO
 
-ALTER DATABASE lwdb SET TRUSTWORTHY ON;
-GO
-
-IF EXISTS (SELECT * FROM sys.types WHERE name = 'SeatCoordinate')
-    DROP TYPE dbo.SeatCoordinate;
-GO
-IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr6Assembly')
-    DROP ASSEMBLY Clr6Assembly;
-GO
 
 IF EXISTS (SELECT * FROM sys.triggers WHERE name = 'TR_MedicalCertificates_OnInsert')
     DROP TRIGGER dbo.TR_MedicalCertificates_OnInsert;
-GO
-IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr5Assembly')
-    DROP ASSEMBLY Clr5Assembly;
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE name = 'sp_IsolateInfectedGroup' AND type = 'PC')
     DROP PROCEDURE dbo.sp_IsolateInfectedGroup;
 GO
-IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr4Assembly')
-    DROP ASSEMBLY Clr4Assembly;
-GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE name = 'fn_GenerateSeatingAssignments' AND type = 'FT')
     DROP FUNCTION dbo.fn_GenerateSeatingAssignments;
-GO
-IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr3Assembly')
-    DROP ASSEMBLY Clr3Assembly;
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE name = 'AggregateDiagnoses' AND type = 'AF')
     DROP AGGREGATE dbo.AggregateDiagnoses;
 GO
-IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr2Assembly')
-    DROP ASSEMBLY Clr2Assembly;
-GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE name = 'fn_CalculateAge' AND type = 'FS')
     DROP FUNCTION dbo.fn_CalculateAge;
 GO
+
+IF EXISTS (SELECT * FROM sys.types WHERE name = 'SeatCoordinate')
+    DROP TYPE dbo.SeatCoordinate;
+GO
+
+
+IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr6Assembly')
+    DROP ASSEMBLY Clr6Assembly;
+GO
+
+IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr5Assembly')
+    DROP ASSEMBLY Clr5Assembly;
+GO
+
+IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr4Assembly')
+    DROP ASSEMBLY Clr4Assembly;
+GO
+
+IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr3Assembly')
+    DROP ASSEMBLY Clr3Assembly;
+GO
+
+IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr2Assembly')
+    DROP ASSEMBLY Clr2Assembly;
+GO
+
 IF EXISTS (SELECT * FROM sys.assemblies WHERE name = 'Clr1Assembly')
     DROP ASSEMBLY Clr1Assembly;
 GO
+
 
 CREATE ASSEMBLY Clr1Assembly
 FROM '/tmp/clr1.dll'

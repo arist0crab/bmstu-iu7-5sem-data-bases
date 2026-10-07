@@ -1,11 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlTypes;
 using System.IO;
 using System.Text;
 using Microsoft.SqlServer.Server;
-
 
 [Serializable]
 [SqlUserDefinedAggregate(
@@ -17,13 +16,11 @@ using Microsoft.SqlServer.Server;
 ]
 public class DiagnosesAggregation : IBinarySerialize
 {
-    private HashSet<string> seen;
-    private StringBuilder intermediateResult;
+    private List<string> seen;
 
     public void Init()
     {
-        seen = new HashSet<string>();
-        intermediateResult = new StringBuilder();
+        seen = new List<string>();
     }
 
     public void Accumulate(SqlString value)
@@ -46,36 +43,43 @@ public class DiagnosesAggregation : IBinarySerialize
 
     public SqlString Terminate()
     {
-        return new SqlString(this.intermediateResult.ToString());
+        if (seen == null || seen.Count == 0)
+            return SqlString.Null;
+
+        return new SqlString(string.Join(", ", seen));
     }
 
     public void Read(BinaryReader r)
     {
-        this.seen = new HashSet<string>();
-        this.intermediateResult = new StringBuilder();
+        this.seen = new List<string>();
 
         int count = r.ReadInt32();
         for (int i = 0; i < count; ++i)
         {
-            string s = r.ReadString();
-            AddDiagnosis(s);
+            this.seen.Add(r.ReadString());
         }
     }
 
     public void Write(BinaryWriter w)
     {
+        if (this.seen == null)
+        {
+            w.Write(0);
+            return;
+        }
+
         w.Write(this.seen.Count);
         foreach (string s in this.seen)
+        {
             w.Write(s);
+        }
     }
 
     private void AddDiagnosis(string s)
     {
-        if (this.seen.Add(s))
+        if (!this.seen.Contains(s))
         {
-            if (this.intermediateResult.Length > 0)
-                this.intermediateResult.Append(", ");
-            this.intermediateResult.Append(s);
+            this.seen.Add(s);
         }
     }
 }
