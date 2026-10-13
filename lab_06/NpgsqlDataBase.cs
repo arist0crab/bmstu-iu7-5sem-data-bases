@@ -10,7 +10,7 @@ namespace Lab06.NpgsqlDataBaseModule
         private readonly string _databaseName;
         private readonly string _password = "88005553535";
 
-        private NpgsqlDataSource? _dataSource = null;
+        private readonly NpgsqlDataSource _dataSource;
 
         public string HostName => _hostName;
         public string UserName => _userName;
@@ -22,23 +22,13 @@ namespace Lab06.NpgsqlDataBaseModule
             _userName = userName;
             _databaseName = databaseName;
 
-            try
-            {
-                var connectionString = $"Host={_hostName};Username={_userName};Password={_password};Database={_databaseName}";
-                _dataSource = NpgsqlDataSource.Create(connectionString);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("[ NpgsqlDataBase ] Ошибка создания источника данных");
-            }
+            var connectionString = $"Host={_hostName};Username={_userName};Password={_password};Database={_databaseName}";
+            _dataSource = NpgsqlDataSource.Create(connectionString);
         }
 
         // 1. Посчитать количество активных учеников в школе
         public void Task01()
         {
-            if (_dataSource is null)
-                return;
-
             using var command = _dataSource.CreateCommand("SELECT COUNT(*) FROM students WHERE is_active = true");
             using var reader = command.ExecuteReader();
 
@@ -49,9 +39,6 @@ namespace Lab06.NpgsqlDataBaseModule
         // 2. Найти всех учеников с активными справками
         public void Task02()
         {
-            if (_dataSource is null)
-                return;
-
             string query = 
             """
                 SELECT
@@ -74,9 +61,6 @@ namespace Lab06.NpgsqlDataBaseModule
         // 3. Найти самого старшего ученика класса
         public void Task03(int classId)
         {
-            if (_dataSource is null)
-                return;
-
             string query = 
             """
                 WITH AgeRankedStudents AS (
@@ -98,6 +82,24 @@ namespace Lab06.NpgsqlDataBaseModule
 
             while (reader.Read())
                 Console.WriteLine($"Самый старший ученик в классе id = {classId}: {reader.GetString(0)} {reader.GetString(1)}");
+        }
+
+        // 4. Вывести список всех таблиц базы данных
+        public void Task04()
+        {
+            string query = 
+            """
+                SELECT
+                    table_name
+                FROM information_schema.tables
+                WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
+            """;
+
+            using var command = _dataSource.CreateCommand(query);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+                Console.WriteLine($"{reader.GetString(0)}");
         }
     }
 }
