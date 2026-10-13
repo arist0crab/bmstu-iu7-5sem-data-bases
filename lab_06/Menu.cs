@@ -8,13 +8,6 @@ namespace Lab06.MenuModule
     {
         public const ushort MENU_OPTIONS_QUANTITY = 10;
 
-        private static Dictionary<int, Action> _actions = [];
-
-        public static void Initialize(Dictionary<int, Action> actions)
-        {
-            _actions = actions;
-        }
-
         static public void PrintMenu()
         {
             Console.WriteLine(
@@ -32,53 +25,10 @@ namespace Lab06.MenuModule
                 ║  8. Получить текущую версию сервера                    ║
                 ║  9. Создать таблицу achiements                         ║
                 ║ 10. Вставить тестовые данные в achiements              ║
-                ║ 0. Выход                                               ║
+                ║  0. Выход                                              ║
                 ╚════════════════════════════════════════════════════════╝
                 """
             );
-        }
-
-        static public bool ExecuteMenuOption(ushort opt)
-        {
-            if (opt == 0)
-                return false;
-
-            if (_actions.TryGetValue(opt, out var action))
-                action.Invoke();
-            else
-                Console.WriteLine("[ Menu ] Указанного пункта меню не существует ");
-
-            return true;
-        }
-
-        static public ushort InputMenuOption()
-        {
-            bool inputProccess = true;
-            ushort option = 0;
-
-            while (inputProccess)
-            {
-                Console.Write("Введите опцию меню: ");
-                string? input = Console.ReadLine();
-
-                if (ushort.TryParse(input, out option))
-                {
-                    if (0 <= option && option <= MENU_OPTIONS_QUANTITY)
-                    {
-                        inputProccess = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"[ Menu ] Введенная опция должна быть в диапазоне от 0 до {MENU_OPTIONS_QUANTITY}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("[ Menu ] Введите целое неотрицательное число");
-                }
-            }
-
-            return option;
         }
     }   
 }
