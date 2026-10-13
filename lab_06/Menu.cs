@@ -1,11 +1,19 @@
 using System;
 using System.Drawing;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Lab06.MenuModule
 {
     public class Menu
     {
-        const ushort MENU_OPTIONS_QUANTITY = 10;
+        public const ushort MENU_OPTIONS_QUANTITY = 10;
+
+        private static Dictionary<int, Action> _actions = [];
+
+        public static void Initialize(Dictionary<int, Action> actions)
+        {
+            _actions = actions;
+        }
 
         static public void PrintMenu()
         {
@@ -30,6 +38,19 @@ namespace Lab06.MenuModule
             );
         }
 
+        static public bool ExecuteMenuOption(ushort opt)
+        {
+            if (opt == 0)
+                return false;
+
+            if (_actions.TryGetValue(opt, out var action))
+                action.Invoke();
+            else
+                Console.WriteLine("[ Menu ] Указанного пункта меню не существует ");
+
+            return true;
+        }
+
         static public ushort InputMenuOption()
         {
             bool inputProccess = true;
@@ -48,12 +69,12 @@ namespace Lab06.MenuModule
                     }
                     else
                     {
-                        Console.WriteLine($"[ ERROR ] Введенная опция должна быть в диапазоне от 0 до {MENU_OPTIONS_QUANTITY}");
+                        Console.WriteLine($"[ Menu ] Введенная опция должна быть в диапазоне от 0 до {MENU_OPTIONS_QUANTITY}");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("[ ERROR ] Введите целое неотрицательное число");
+                    Console.WriteLine("[ Menu ] Введите целое неотрицательное число");
                 }
             }
 
