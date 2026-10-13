@@ -8,7 +8,7 @@ namespace Lab06.MainModule
 {
     public class Program
     {
-        private static NpgsqlDataBase? _dataBase = null;
+        private static readonly NpgsqlDataBase _dataBase = new("localhost", "postgres", "postgres");
         private static readonly Dictionary<int, Action> _menuActions = new()
         {
             { 1, () => _dataBase?.Task01() },
@@ -18,7 +18,7 @@ namespace Lab06.MainModule
         static public void Main()
         {
             Menu.Initialize(_menuActions);
-            SetUpDataBase();
+            _dataBase.CreateDataSource();
 
             bool mainCycle = true;
             while (mainCycle)
@@ -28,14 +28,5 @@ namespace Lab06.MainModule
                 mainCycle = Menu.ExecuteMenuOption(opt);
             }
         }
-
-        static private void SetUpDataBase()
-        {
-            if (_dataBase is null)
-            {
-                _dataBase = new NpgsqlDataBase("localhost", "postgres", "postgres");
-                _dataBase.CreateDataSource();
-            }
-        } 
     }  
 }
