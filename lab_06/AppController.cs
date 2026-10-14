@@ -72,10 +72,11 @@ namespace Lab06.AppControllerModule
 
         private void Task03()
         {
+            // TODO try to unhardcode
             uint minClassGroupId = 1, maxClassGroupId = 500;
 
             Console.Write($"Введите id класса от {minClassGroupId} до {maxClassGroupId}: ");
-            uint classGroupId = ConsoleInput.GetUintRange(1, 500);
+            uint classGroupId = ConsoleInput.GetUintRange(minClassGroupId, maxClassGroupId);
 
             _dataBase.Task03((int)classGroupId);
         }
@@ -87,7 +88,13 @@ namespace Lab06.AppControllerModule
 
         private void Task05()
         {
-            
+            // TODO try to unhardcode
+            uint minClassGroupId = 1, maxClassGroupId = 500;
+
+            Console.Write($"Введите id класса от {minClassGroupId} до {maxClassGroupId}: ");
+            uint classGroupId = ConsoleInput.GetUintRange(minClassGroupId, maxClassGroupId);
+
+            _dataBase.Task05((int)classGroupId);
         }
 
         private void Task06()

@@ -101,5 +101,17 @@ namespace Lab06.NpgsqlDataBaseModule
             while (reader.Read())
                 Console.WriteLine($"{reader.GetString(0)}");
         }
+
+        // 5. Вывести количество учеников в классе 
+        public void Task05(int classGroupId)
+        {
+            string query = "SELECT public.calc_students_in_class($1)";
+            using var command = _dataSource.CreateCommand(query);
+            command.Parameters.AddWithValue(classGroupId);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+                Console.WriteLine($"Количество учеников в классе с id = {classGroupId}: {reader.GetInt32(0)}");
+        }
     }
 }
