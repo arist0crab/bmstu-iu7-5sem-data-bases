@@ -113,5 +113,17 @@ namespace Lab06.NpgsqlDataBaseModule
             while (reader.Read())
                 Console.WriteLine($"Количество учеников в классе с id = {classGroupId}: {reader.GetInt32(0)}");
         }
+
+        // 6. Вывести таблицу всех медицинских сертификатов студента
+        public void Task06(int studentId)
+        {
+            string query = "SELECT * FROM get_students_medical_certificates($1)";
+            using var command = _dataSource.CreateCommand(query);
+            command.Parameters.AddWithValue(studentId);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+                Console.WriteLine($"id сертификата: {reader.GetInt32(0)}, {reader.GetString(1)}");
+        }
     }
 }

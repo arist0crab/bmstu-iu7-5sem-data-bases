@@ -99,7 +99,13 @@ namespace Lab06.AppControllerModule
 
         private void Task06()
         {
-            
+            // TODO try to unhardcode
+            uint minStudentId = 1, maxStudentId = 1000;
+
+            Console.Write($"Введите id любого ученика от {minStudentId} до {maxStudentId}: ");
+            uint studentId = ConsoleInput.GetUintRange(minStudentId, maxStudentId);
+
+            _dataBase.Task06((int)studentId);
         }
 
         private void Task07()
