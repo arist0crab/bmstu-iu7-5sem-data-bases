@@ -110,7 +110,17 @@ namespace Lab06.AppControllerModule
 
         private void Task07()
         {
-            
+            // TODO try to unhardcode
+            uint minClassGroupId = 1, maxClassGroupId = 500;
+            uint minTeacherId = 1, maxTeacherId = 1000;
+
+            Console.Write($"Введите id (от {minClassGroupId} до {maxClassGroupId}) класса для смены классного руководителя: ");
+            uint teacherId = ConsoleInput.GetUintRange(minClassGroupId, maxClassGroupId);
+
+            Console.Write($"Введите id нового классного руководителя (от {minTeacherId} до {maxTeacherId})");
+            uint classId = ConsoleInput.GetUintRange(minTeacherId, maxTeacherId);
+
+            _dataBase.Task07((int)classId, (int)teacherId);
         }
 
         private void Task08()

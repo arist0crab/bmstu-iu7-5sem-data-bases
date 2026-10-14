@@ -125,5 +125,18 @@ namespace Lab06.NpgsqlDataBaseModule
             while (reader.Read())
                 Console.WriteLine($"id сертификата: {reader.GetInt32(0)}, {reader.GetString(1)}");
         }
+
+        // 7. Поменять классного руководителя у класса
+        public void Task07(int pClassId, int pTeacherId)
+        {
+            string query = "CALL change_class_teacher($1, $2)";
+            using var command = _dataSource.CreateCommand(query);
+            command.Parameters.AddWithValue(pClassId);
+            command.Parameters.AddWithValue(pTeacherId);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+                Console.WriteLine($"Классный руководитель класса id = {pClassId} был сменен на учителя id = {pTeacherId}: ");
+        }
     }
 }
