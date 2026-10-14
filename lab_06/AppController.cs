@@ -130,7 +130,7 @@ namespace Lab06.AppControllerModule
 
         private void Task09()
         {
-            
+            _dataBase.Task09();
         }
 
         private void Task10()

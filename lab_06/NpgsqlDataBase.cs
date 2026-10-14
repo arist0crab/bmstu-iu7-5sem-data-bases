@@ -149,5 +149,36 @@ namespace Lab06.NpgsqlDataBaseModule
             while (reader.Read())
                 Console.WriteLine($"{reader.GetString(0)}");
         }
+
+        // 9. Создать таблицу achiements
+        public void Task09()
+        {
+            string queryCreateAchiementsTable = 
+            """
+                CREATE TABLE "public"."achiements" (
+                    id SERIAL
+                    , student_id INT
+                    , date DATE
+                    , achievment VARCHAR(100)
+                )
+            """;
+
+            string querySetRestrictions = 
+            """
+                ALTER TABLE achiements ADD CONSTRAINT pk_achiements PRIMARY KEY (id);
+                ALTER TABLE achiements ADD CONSTRAINT fk_studentt_achiements FOREIGN KEY (student_id) REFERENCES students(id);
+                ALTER TABLE achiements 
+                    ALTER COLUMN id SET NOT NULL,
+                    ALTER COLUMN student_id SET NOT NULL,
+                    ALTER COLUMN achievment SET NOT NULL;
+                ALTER TABLE achiements ALTER COLUMN date SET DEFAULT NULL;
+            """;
+
+            using var commandCreateAchievmentTable = _dataSource.CreateCommand(queryCreateAchiementsTable);
+            using var commandAlterAchievmentTable = _dataSource.CreateCommand(querySetRestrictions);
+
+            commandCreateAchievmentTable.ExecuteNonQuery();
+            commandAlterAchievmentTable.ExecuteNonQuery();
+        }
     }
 }
