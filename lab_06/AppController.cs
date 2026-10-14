@@ -135,7 +135,19 @@ namespace Lab06.AppControllerModule
 
         private void Task10()
         {
-            
+            // TODO try to unhardcode
+            uint minStudentId = 1, maxStudentId = 1000;
+
+            Console.Write($"Введите id любого ученика от {minStudentId} до {maxStudentId}: ");
+            uint studentId = ConsoleInput.GetUintRange(minStudentId, maxStudentId);
+
+            Console.Write($"Введите достижение ученика с id = {studentId}: ");
+            string achievement = ConsoleInput.GetString();
+
+            Console.Write($"Введите дату достижения ученика с id = {studentId}: ");
+            DateTime date = ConsoleInput.GetDateTime();
+
+            _dataBase.Task10((int)studentId, achievement, date);
         }
     }
 }

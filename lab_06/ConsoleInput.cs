@@ -1,4 +1,5 @@
 using System;
+using System.IO.Pipelines;
 using System.Net;
 
 namespace Lab06.ConsoleInputModule
@@ -40,6 +41,41 @@ namespace Lab06.ConsoleInputModule
             }
 
             return uint_num;
+        }
+
+        public static string GetString()
+        {
+            string? input = Console.ReadLine();
+
+            while (input == null)
+            {
+                Console.Write("[ ConsoleInput ] Введите непустую строку: ");
+                input = Console.ReadLine();
+            }
+
+            return input;
+        }
+
+        public static DateTime GetDateTime()
+        {
+            DateTime result = DateTime.Now;
+            bool inputCycle = true;
+
+            while (inputCycle)
+            {
+                string? input = Console.ReadLine();
+
+                if (DateTime.TryParse(input, out result))
+                {
+                    inputCycle = false;
+                }
+                else
+                {
+                    Console.Write("[ ConsoleInput ] Неверный формат даты. Попробуйте еще раз: ");
+                }
+            }
+
+            return result;
         }
     }
 }

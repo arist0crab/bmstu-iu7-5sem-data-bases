@@ -1,4 +1,5 @@
 using System;
+using System.Data.SqlTypes;
 using Npgsql;
 
 namespace Lab06.NpgsqlDataBaseModule
@@ -153,6 +154,11 @@ namespace Lab06.NpgsqlDataBaseModule
         // 9. Создать таблицу achiements
         public void Task09()
         {
+            string queryDropAchiementsIfExists = 
+            """
+                DROP TABLE IF EXISTS "public"."achiements";
+            """;
+
             string queryCreateAchiementsTable = 
             """
                 CREATE TABLE "public"."achiements" (
@@ -174,11 +180,41 @@ namespace Lab06.NpgsqlDataBaseModule
                 ALTER TABLE achiements ALTER COLUMN date SET DEFAULT NULL;
             """;
 
+            using var commandDropAchiementsIfExists = _dataSource.CreateCommand(queryDropAchiementsIfExists);
             using var commandCreateAchievmentTable = _dataSource.CreateCommand(queryCreateAchiementsTable);
             using var commandAlterAchievmentTable = _dataSource.CreateCommand(querySetRestrictions);
 
+            commandDropAchiementsIfExists.ExecuteNonQuery();
             commandCreateAchievmentTable.ExecuteNonQuery();
             commandAlterAchievmentTable.ExecuteNonQuery();
+        }
+
+        // 10. Вставить тестовые данные в achiements
+        public void Task10(int studentId, string achievment, DateTime? date = null)
+        {
+            string checkTableQuery = 
+            """
+                SELECT 1 
+                FROM information_schema.tables 
+                WHERE table_schema = 'public' AND table_name = 'achiements';
+            """;
+
+            using var checkCommand = _dataSource.CreateCommand(checkTableQuery);
+            var result = checkCommand.ExecuteScalar();
+
+            string query = 
+            """
+                INSERT INTO achiements (student_id, achievment, date) 
+                VALUES ($1, $2, $3)
+            """;
+
+            using var command = _dataSource.CreateCommand(query);
+            
+            command.Parameters.AddWithValue(studentId);
+            command.Parameters.AddWithValue(achievment);
+            command.Parameters.AddWithValue((object?)date ?? DBNull.Value);
+
+            command.ExecuteNonQuery();
         }
     }
 }
