@@ -125,7 +125,7 @@ namespace Lab06.AppControllerModule
 
         private void Task08()
         {
-            
+            _dataBase.Task08();
         }
 
         private void Task09()

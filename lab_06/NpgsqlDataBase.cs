@@ -138,5 +138,16 @@ namespace Lab06.NpgsqlDataBaseModule
             while (reader.Read())
                 Console.WriteLine($"Классный руководитель класса id = {pClassId} был сменен на учителя id = {pTeacherId}: ");
         }
+
+        // 8. Получить текущую версию сервера
+        public void Task08()
+        {
+            string query = "SELECT version();";
+            using var command = _dataSource.CreateCommand(query);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+                Console.WriteLine($"{reader.GetString(0)}");
+        }
     }
 }
