@@ -6,7 +6,7 @@ namespace Lab06.MenuModule
 {
     public class Menu
     {
-        public const ushort MENU_OPTIONS_QUANTITY = 10;
+        public const ushort MENU_OPTIONS_QUANTITY = 11;
 
         static public void PrintMenu()
         {
@@ -25,6 +25,7 @@ namespace Lab06.MenuModule
                 ║  8. Получить текущую версию сервера                          ║
                 ║  9. Создать таблицу achiements                               ║
                 ║ 10. Вставить тестовые данные в achiements                    ║
+                ║ 11. Выполнить задание защиты                                 ║
                 ║  0. Выход                                                    ║
                 ╚══════════════════════════════════════════════════════════════╝
                 """

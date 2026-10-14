@@ -216,5 +216,28 @@ namespace Lab06.NpgsqlDataBaseModule
 
             command.ExecuteNonQuery();
         }
+
+        public void Protection()
+        {
+            // найти таблицу, самую большую по отношению:
+            // кол-во записей / память таблицы
+            string query = 
+            """
+                SELECT 
+                    relname,
+                    pg_relation_size(relid) AS table_size
+                FROM 
+                    pg_catalog.pg_stat_user_tables
+                WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+                ORDER BY pg_relation_size(relid) DESC
+                LIMIT 1
+            """;
+
+            using var command = _dataSource.CreateCommand(query);
+            using var reader = command.ExecuteReader();
+
+            while (reader.Read())
+                Console.WriteLine($"{reader.GetString(0)} {reader.GetInt64(1)}");
+        }
     }
 }

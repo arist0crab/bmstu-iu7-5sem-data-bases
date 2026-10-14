@@ -27,7 +27,8 @@ namespace Lab06.AppControllerModule
                 { 7, Task07 },
                 { 8, Task08 },
                 { 9, Task09 },
-                { 10, Task10 }
+                { 10, Task10 },
+                { 11, Protection }
             };
         }
 
@@ -148,6 +149,11 @@ namespace Lab06.AppControllerModule
             DateTime date = ConsoleInput.GetDateTime();
 
             _dataBase.Task10((int)studentId, achievement, date);
+        }
+
+        private void Protection()
+        {
+            _dataBase.Protection();
         }
     }
 }
