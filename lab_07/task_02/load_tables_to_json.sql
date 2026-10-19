@@ -1,0 +1,10 @@
+SELECT json_agg(row_to_json(t)) FROM absents AS t;
+SELECT json_agg(row_to_json(t)) FROM achiements AS t;
+SELECT json_agg(row_to_json(t)) FROM cabinets AS t;
+SELECT json_agg(row_to_json(t)) FROM class_groups AS t;
+SELECT json_agg(row_to_json(t)) FROM desks AS t;
+SELECT json_agg(row_to_json(t)) FROM medical_certificates AS t;
+SELECT json_agg(row_to_json(t)) FROM seatings_assignments AS t;
+SELECT json_agg(row_to_json(t)) FROM seats AS t;
+SELECT json_agg(row_to_json(t)) FROM students AS t;
+SELECT json_agg(row_to_json(t)) FROM teachers AS t;
