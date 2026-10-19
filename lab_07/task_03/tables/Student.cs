@@ -42,8 +42,5 @@ namespace Lab07.Task03.StudentModule
         [Required]
         [Column("is_active")]
         public bool IsActive { get; set; }
-
-        [Column("extra")]
-        public string? Extra { get; set; }
     }
 }
