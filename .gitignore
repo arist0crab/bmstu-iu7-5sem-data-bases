@@ -1,4 +1,4 @@
 *.csv
 *.dll
-*/bin/*
-*/obj/*
+bin/
+obj/
