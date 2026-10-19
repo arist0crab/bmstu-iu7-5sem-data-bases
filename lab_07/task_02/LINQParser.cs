@@ -56,7 +56,7 @@ namespace Lab07.Task02.ParserModule
 
             JObject newCabinet = new()
             {
-              ["id"] = jsonArray[0]["json_agg"]?.Count(),
+              ["id"] = jsonArray[0]["json_agg"]?.Count() + 1,
               ["number"] = cabinetNumber,
               ["rows_count"] = rowsQ,
               ["cols_count"] = colsQ  
