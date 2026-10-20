@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Lab07.Task03.TeacherModule;
+using Lab07.Task03.CabinetModule;
 
 
 namespace Lab07.Task03.ClassGroupModule
@@ -28,7 +30,13 @@ namespace Lab07.Task03.ClassGroupModule
         [Column("teacher_id")]
         public int TeacherId { get; set; }
 
+        [ForeignKey("TeacherId")]
+        public Teacher? ClassGroupTeacher { get; set; }
+
         [Column("cabinet_id")]
-        public int CabinetId { get; set; }
+        public int? CabinetId { get; set; }
+
+        [ForeignKey("CabinetId")]
+        public Cabinet? ClassGroupCabinet { get; set; }
     }
 }

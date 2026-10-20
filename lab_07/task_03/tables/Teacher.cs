@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lab07.Task03.TeacherModule
 {
-    [Table("students")]
+    [Table("teachers")]
     public class Teacher
     {
         [Key]
